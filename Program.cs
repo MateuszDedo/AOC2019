@@ -6,7 +6,9 @@ namespace AOC2019
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            const UInt32 day = 1;
+            SolutionFactory.getSolution(day).part1();
+            SolutionFactory.getSolution(day).part2();
         }
     }
 }
