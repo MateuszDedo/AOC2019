@@ -6,7 +6,7 @@ namespace AOC2019
     {
         static void Main(string[] args)
         {
-            const UInt32 day = 1;
+            const UInt32 day = 2;
             SolutionFactory.getSolution(day).part1();
             SolutionFactory.getSolution(day).part2();
         }
