@@ -56,7 +56,6 @@ namespace AOC2019
         {
             bool xBetween = false;
             bool yBetween = false;
-            
 
             int minX1 = Math.Min(l1.x1, l1.x2);
             int maxX1 = Math.Max(l1.x1, l1.x2);
