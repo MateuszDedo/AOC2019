@@ -5,8 +5,37 @@ namespace AOC2019
 {
     public class Point
     {
-        public int x;
-        public int y;
+        public double x;
+        public double y;
+
+        public Point(double x, double y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+        public Point(){}
+    }
+
+    public class PolarPoint
+    {
+        public double radius;
+        public double angle;
+
+        public double x;
+        public double y;
+
+        public PolarPoint(double radius, double angle)
+        {
+            this.radius = radius;
+            this.angle = angle;
+        }
+        public PolarPoint(double radius, double angle, double x, double y)
+        {
+            this.radius = radius;
+            this.angle = angle;
+            this.x = x;
+            this.y = y;
+        }
     }
     public class Line
     {
@@ -29,8 +58,8 @@ namespace AOC2019
                 if (point.x >= minX1 && point.x <= maxX1 &&
                     point.y >= minY1 && point.y <= maxY1)
                 {
-                    distToPoint += System.Math.Abs(l1.x1 - point.x);
-                    distToPoint += System.Math.Abs(l1.y1 - point.y);
+                    distToPoint += System.Math.Abs(l1.x1 - (int)point.x);
+                    distToPoint += System.Math.Abs(l1.y1 - (int)point.y);
                     break; 
                 }
                 distToPoint += maxX1 - minX1;
@@ -108,10 +137,7 @@ namespace AOC2019
                     crossX = l2.x1;
                     crossY = l1.y1;
                 }
-                Point p = new Point();
-                p.x = crossX;
-                p.y = crossY;
-                return p;
+                return new Point(crossX, crossY);
             }
             return null;
         }

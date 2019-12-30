@@ -13,7 +13,7 @@ namespace AOC2019
             List<Line> lines2 = getLinesFromInput(il.inputStringList[1]);
 
             int lowestDist = (from res in (from p in Library2D.getIntersections(lines1, lines2) 
-                                           select (System.Math.Abs(p.x) + System.Math.Abs(p.y)))
+                                           select (System.Math.Abs((int)p.x) + System.Math.Abs((int)p.y)))
                               where (res != 0)
                               select res).Min();
 
