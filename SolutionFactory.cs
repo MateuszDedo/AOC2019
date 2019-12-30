@@ -24,6 +24,8 @@ namespace AOC2019
                     return new Day7();
                 case 8:
                     return new Day8();
+                case 9:
+                    return new Day9();
             }
             return null;
         }

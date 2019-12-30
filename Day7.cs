@@ -19,7 +19,7 @@ namespace AOC2019
                     computer.loadProgramInput(7);
                     computer.createProgramFromInput();
                     computer.executeProgram(new List<int>{phases[i], local});
-                    local = computer.getDiagnosticCode();
+                    local = (int)computer.getDiagnosticCode();
                 }
                 if (local > result) result = local;
             }
@@ -39,7 +39,7 @@ namespace AOC2019
                     for (int i = 0; i < 5; i++)
                     {
                         computers[i].executeProgram(new List<int>{phases[i], local}, RunMode.BREAK_ON_OUTPUT);
-                        local = computers[i].getDiagnosticCode();
+                        local = (int)computers[i].getDiagnosticCode();
                     }
                 if (local > result) result = local;
             }
