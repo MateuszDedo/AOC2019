@@ -6,9 +6,9 @@ namespace AOC2019
 {
     public class Day2 : Solution
     {
-       IntcodeComputer computer = new IntcodeComputer();
         override public void part1()
         {
+            IntcodeComputer computer = new IntcodeComputer();
             computer.loadProgramInput(2);
             computer.createProgramFromInput();
             computer.executeProgram(12,2);
@@ -18,6 +18,7 @@ namespace AOC2019
 
         override public void part2()
         {
+            IntcodeComputer computer = new IntcodeComputer();
             computer.loadProgramInput(2);
             for (int noun = 0; noun < 100; noun++)
             {

@@ -9,6 +9,13 @@ namespace AOC2019
         POSITION_MODE,
         IMMEDIATE_MODE
     }
+
+    public enum RunMode
+    {
+        NORMAL,
+        BREAK_ON_OUTPUT
+    }
+
     public class IntcodeComputer
     {
         private List<int> programInt;
@@ -16,8 +23,11 @@ namespace AOC2019
         private ParameterMode param1Mode;
         private ParameterMode param2Mode;
         private int position = 0;
-        private int systemId = 0;
+        private List<int> systemId = new List<int>();
         private int diagnosticCode = 0;
+        private int systemIdNumber = 0;
+        private bool isRunning = false;
+        private RunMode runMode = RunMode.NORMAL;
         public void loadProgramInput(UInt32 day)
         {
             InputLoader il = new InputLoader(day);
@@ -25,6 +35,7 @@ namespace AOC2019
         }
         public void createProgramFromInput()
         {
+            position = 0;
             programInt = new List<int>();
             program.ForEach(s => programInt.Add(Convert.ToInt32(s)));
         }
@@ -64,7 +75,9 @@ namespace AOC2019
             return idx;
         }
         List<Delegate> opcodeHandlers = new List<Delegate>();
-        delegate void OpcodeDelegate();
+        public bool hasStopped = false;
+
+        delegate bool OpcodeDelegate();
         public IntcodeComputer()
         {
             opcodeHandlers.Add(new OpcodeDelegate(handleUnknownOpcode));
@@ -77,50 +90,59 @@ namespace AOC2019
             opcodeHandlers.Add(new OpcodeDelegate(handleOpcode7));
             opcodeHandlers.Add(new OpcodeDelegate(handleOpcode8));
         }
-        private void handleUnknownOpcode()
+        private bool handleUnknownOpcode()
         {
+            return true;
         }
-        private void handleOpcode1()
+        private bool handleOpcode1()
         {
             int outputPosition = programInt[position + 3];
             programInt[outputPosition] = programInt[getParamIndex(position + 1, param1Mode)] + 
                                             programInt[getParamIndex(position + 2, param2Mode)];
             position += 4;
+            return true;
         }
 
-        private void handleOpcode2()
+        private bool handleOpcode2()
         {
             int outputPosition = programInt[position + 3];
             programInt[outputPosition] = programInt[getParamIndex(position + 1, param1Mode)] * 
                                             programInt[getParamIndex(position + 2, param2Mode)];
             position += 4;
+            return true;
         }
 
-        private void handleOpcode3()
+        private bool handleOpcode3()
         {
-            saveInputAtPosition(getParamIndex(position + 1), systemId);
+            saveInputAtPosition(getParamIndex(position + 1), systemId[systemIdNumber]);
             position += 2;
+            systemIdNumber++;
+            return true;
         }
 
-        private void handleOpcode4()
+        private bool handleOpcode4()
         {
             diagnosticCode = programInt[getParamIndex(position + 1)];
             position += 2;
+            if (runMode == RunMode.NORMAL) return true;
+            return false;
         }
 
-        private void handleOpcode5()
+        private bool handleOpcode5()
         {
             if (programInt[getParamIndex(position + 1, param1Mode)] != 0) position = programInt[getParamIndex(position + 2, param2Mode)];
             else position += 3;
+            return true;
         }
 
-        private void handleOpcode6()
+        private bool handleOpcode6()
         {
             if (programInt[getParamIndex(position + 1, param1Mode)] == 0) position = programInt[getParamIndex(position + 2, param2Mode)];
             else position += 3;
+            return true;
         }
 
-        private void handleOpcode7()
+        private bool handleOpcode7()
         {
             int outputPosition = programInt[position + 3];
             if (programInt[getParamIndex(position + 1, param1Mode)] < programInt[getParamIndex(position + 2, param2Mode)]) 
@@ -128,9 +150,10 @@ namespace AOC2019
             else 
                 programInt[outputPosition] = 0;
             position += 4;
+            return true;
         }
 
-        private void handleOpcode8()
+        private bool handleOpcode8()
         {
             int outputPosition = programInt[position + 3];
             if (programInt[getParamIndex(position + 1, param1Mode)] == programInt[getParamIndex(position + 2, param2Mode)]) 
@@ -138,20 +161,31 @@ namespace AOC2019
             else 
                 programInt[outputPosition] = 0;
             position += 4;
+            return true;
         }
 
-        public void executeProgram(int input)
+        public void executeProgram(List<int> input, RunMode runMode = RunMode.NORMAL)
         {
-            position = 0;
+            this.runMode = runMode;
             systemId = input;
+
+            if (isRunning)
+                systemIdNumber = 1;
+            else
+                systemIdNumber = 0;
+            
+            isRunning = true;
+            
             while (programInt[position] != 99)
-                opcodeHandlers[getOpcodeAndSaveParametersMode(position)].DynamicInvoke();
+                if ((bool)(opcodeHandlers[getOpcodeAndSaveParametersMode(position)].DynamicInvoke()) == false) return;
+            hasStopped = true;
         }
         public void executeProgram(int param1, int param2)
         {
             programInt[1] = param1;
             programInt[2] = param2;
-            executeProgram(0);
+            List<int> l = new List<int>();
+            executeProgram(l);
         }
     }
 }
