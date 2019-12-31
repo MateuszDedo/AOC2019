@@ -3,6 +3,13 @@ using System.Collections.Generic;
 
 namespace AOC2019
 {
+    public enum Direction
+    {
+        N,
+        W,
+        S,
+        E
+    }
     public class Point
     {
         public double x;
