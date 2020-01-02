@@ -77,7 +77,7 @@ namespace AOC2019
 
             return Convert.ToInt32(tmp[4].ToString()) + Convert.ToInt32(tmp[3].ToString()) * 10;
         }
-        private void saveInputAtPosition(int position, int value)
+        public void saveInputAtPosition(int position, int value)
         {
             programLong[position] = value;
         }
@@ -191,7 +191,7 @@ namespace AOC2019
             return true;
         }
 
-        public void executeProgram(List<int> input, RunMode runMode = RunMode.NORMAL)
+        public long executeProgram(List<int> input, RunMode runMode = RunMode.NORMAL)
         {
             this.runMode = runMode;
             systemId = input;
@@ -206,9 +206,10 @@ namespace AOC2019
             while (programLong[position] != 99)
             {
                 int opcode = getOpcodeAndSaveParametersMode(position);
-                if ((bool)(opcodeHandlers[opcode].DynamicInvoke()) == false) return;
+                if ((bool)(opcodeHandlers[opcode].DynamicInvoke()) == false) return getDiagnosticCode();
             }
             hasStopped = true;
+            return getDiagnosticCode();
         }
         public void executeProgram(int param1, int param2)
         {
