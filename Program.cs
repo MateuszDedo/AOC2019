@@ -6,11 +6,10 @@ namespace AOC2019
     {
         static void Main(string[] args)
         {
-            UInt32 day = 13;
-
+            UInt32 day = 14;
+            
             SolutionFactory.getSolution(day).part1();
             SolutionFactory.getSolution(day).part2();
-
         }
     }
 }
